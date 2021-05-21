@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +35,13 @@ namespace Vehicle.Api.Tests
 
             _service.GetCount().Returns(3);
 
+            //  load the mock
+            _service.Get(Arg.Is<int>(i => i % 2 == 0))
+                .Returns(Task.FromResult(new VehicleModel { Id = 14, Make = "Tata", Model = "LPT1612", Owner = "Ravindra", Year = 2009 }));
+
+            _service.Get(Arg.Is<int>(i => i % 2 != 0))
+                .Throws(new Exception("Not found"));
+
             this.controller = new VehiclesController(_service);
         }
 
@@ -55,11 +64,15 @@ namespace Vehicle.Api.Tests
         }
 
 
-        [Test(Description = "return VehicleModel for GET with id")]
-        public async Task GetById()
+        [Test(Description = "return VehicleModel for GET with an event id")]
+        [TestCase(100)]
+        [TestCase(78)]
+        [TestCase(4)]
+        [TestCase(26)]
+        public async Task GetByEvenId(int id)
         {
             //  invoke the Get on the controller
-            ActionResult<VehicleModel> response = await controller.Get(14);
+            ActionResult<VehicleModel> response = await controller.Get(id);
 
             //  response is not null
             Assert.IsNotNull(response);
@@ -68,6 +81,23 @@ namespace Vehicle.Api.Tests
 
             //  length is 3
             Assert.IsNotNull(result);
+        }
+
+        [Test(Description = "throw Exception for GET with an odd id")]
+        [TestCase(7)]
+        [TestCase(785)]
+        [TestCase(191)]
+        [TestCase(3)]
+        public void ThrowExceptionByOddId(int id)
+        {
+            //  verbose
+            //Assert.That(() => controller.Get(id).GetAwaiter().GetResult(), Throws.TypeOf<Exception>());
+
+            //  concise
+            var exception = Assert.Throws<Exception>(() => controller.Get(id).GetAwaiter().GetResult());
+
+            //  testing the message
+            Assert.AreEqual("Not found", exception.Message);
         }
 
         [Test(Description = "create VehicleModel")]

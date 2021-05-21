@@ -130,5 +130,16 @@ namespace Vehicle.Api.Tests
             //  In case status code is 200 or 204, ...
             //Assert.IsTrue(response.StatusCode >= 200 && response.StatusCode < 300);
         }
+
+        [Test]
+        public async Task UpdateRelaysTheCallToService()
+        {
+            //  Spying on the mock
+            var viewModel = new VehicleModel();
+            await controller.Update(viewModel);
+
+            //  We expect 1 call to the mock when Update on the controller is invoked
+            await _service.Received(1).Update(viewModel);   //  This itself is the assertion
+        }
     }
 }

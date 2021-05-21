@@ -44,7 +44,7 @@ namespace Vehicle.Api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return await Task.FromResult(Ok());
+            return await Task.FromResult(NoContent());
         }
     }
 }

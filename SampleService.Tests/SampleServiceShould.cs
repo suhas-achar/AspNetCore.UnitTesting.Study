@@ -1,52 +1,71 @@
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace SampleService.Tests
 {
     public class SampleServiceShould
     {
+        //  Please refer: https://blog.johnwu.cc/images/a/243.png
 
-        public static IEnumerable<LoanApplicationWrapper> GetWrappers()
+        public SampleServiceShould()
         {
-            yield return new LoanApplicationWrapper
-            {
-                Application = new LoanApplication(680, true, 50_000),
-                IsApproved = false
-            };
+            System.Console.WriteLine("Constructor");
+        }
 
-            yield return new LoanApplicationWrapper
-            {
-                Application = new LoanApplication(710, true, 40_000),
-                IsApproved = true
-            };
+        [OneTimeSetUp]
+        public void BeforeAll()
+        {
+            System.Console.WriteLine("OneTimeSetUp");
+        }
 
-            yield return new LoanApplicationWrapper
-            {
-                Application = new LoanApplication(700, true, 30_000),
-                IsApproved = true
-            };
+        [SetUp]
+        public void SetUp()
+        {
+            System.Console.WriteLine("Setup");
+        }
 
-            yield return new LoanApplicationWrapper
-            {
-                Application = new LoanApplication(700, false, 30_000),
-                IsApproved = false
-            };
+        [TearDown]
+        public void TearDown()
+        {
+            System.Console.WriteLine("TearDown");
         }
 
         [Test]
-        [TestCaseSource("GetWrappers")]
-
-        //[Test, TestCaseSource("GetWrappers")] //  also possible
-        public void SquareTheInteger(LoanApplicationWrapper wrapper)
+        public void SquareTheInteger()
         {
+            System.Console.WriteLine("SquareTheInteger");
+
+
+
             //  Arrange : Set the stage
             var service = new SampleService();
 
             //  Act : take the action
-            var result = service.IsApproved(wrapper.Application);
+            var square = service.Square(10);
 
             //  Assert : test
-            Assert.AreEqual(wrapper.IsApproved, result);
+            Assert.AreEqual(10*10, square);
+        }
+
+        [Test]
+        public void ReturnMessage()
+        {
+            System.Console.WriteLine("ReturnMessage");
+
+
+            //  Arrange : Set the stage
+            var service = new SampleService();
+
+            //  Act : take the action
+            var message = service.GetMessage();
+
+            //  Assert : test
+            Assert.AreEqual("Good morning", message);
+        }
+
+        [OneTimeTearDown]
+        public void AfterAll()
+        {
+            System.Console.WriteLine("OneTimeTearDown");
         }
     }
 }

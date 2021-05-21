@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vehicle.Api.Controllers;
 using Vehicle.Api.Models;
+using Vehicle.Api.Services;
 
 namespace Vehicle.Api.Tests
 {
@@ -14,11 +16,13 @@ namespace Vehicle.Api.Tests
     public class VehiclesControllerShould
     {
         private VehiclesController controller;
+        private IVehicleService _service;
 
         [SetUp]
         public void Setup()
         {
-            this.controller = new VehiclesController();
+            this._service = Substitute.For<IVehicleService>();
+            this.controller = new VehiclesController(_service);
         }
 
         [Test(Description = "return IEnumerable<VehicleModel> for GET")]

@@ -4,14 +4,9 @@ namespace SampleService
 {
     public class SampleService
     {
-        public int Square(int n)
+        public bool IsApproved(int creditScore, bool cityDweller, int monthlyIncome)
         {
-            return n * n;
-        }
-
-        public string GetMessage()
-        {
-            return "Good morning";
+            return creditScore >= 700 && cityDweller && monthlyIncome >= 30_000;
         }
     }
 }

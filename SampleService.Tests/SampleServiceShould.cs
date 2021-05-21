@@ -5,19 +5,20 @@ namespace SampleService.Tests
     public class SampleServiceShould
     {
         [Test]
-        [TestCase(11)]
-        [TestCase(-7)]
-        [TestCase(145)]
-        public void SquareTheInteger(int n)
+        [TestCase(680, true, 50_000, false)]
+        [TestCase(710, true, 40_000, true)]
+        [TestCase(700, true, 30_000, true)]
+        [TestCase(700, false, 30_000, false)]
+        public void SquareTheInteger(int creditScore, bool cityDweller, int monthlyIncome, bool approved)
         {
             //  Arrange : Set the stage
             var service = new SampleService();
 
             //  Act : take the action
-            var square = service.Square(n);
+            var result = service.IsApproved(creditScore, cityDweller, monthlyIncome);
 
             //  Assert : test
-            Assert.AreEqual(n*n, square);
+            Assert.AreEqual(approved, result);
         }
     }
 }

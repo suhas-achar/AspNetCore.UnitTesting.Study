@@ -4,9 +4,12 @@ namespace SampleService
 {
     public class SampleService
     {
-        public bool IsApproved(int creditScore, bool cityDweller, int monthlyIncome)
+        public bool IsApproved(LoanApplication application)
         {
-            return creditScore >= 700 && cityDweller && monthlyIncome >= 30_000;
+            return 
+                application.CreditScore >= 700 
+                && application.CityDweller 
+                && application.MonthlyIncome >= 30_000;
         }
     }
 }

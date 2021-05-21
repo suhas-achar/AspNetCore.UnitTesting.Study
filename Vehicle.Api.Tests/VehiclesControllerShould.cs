@@ -22,6 +22,17 @@ namespace Vehicle.Api.Tests
         public void Setup()
         {
             this._service = Substitute.For<IVehicleService>();
+
+            var vehicleList = new List<VehicleModel> {
+                new VehicleModel(),
+                new VehicleModel(),
+                new VehicleModel(),
+            };
+
+            _service.Get().Returns(vehicleList);
+
+            _service.GetCount().Returns(3);
+
             this.controller = new VehiclesController(_service);
         }
 

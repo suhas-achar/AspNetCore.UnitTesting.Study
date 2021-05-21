@@ -13,5 +13,7 @@ namespace Vehicle.Api.Services
         Task Create(VehicleModel model);
         Task Update(VehicleModel model);
         Task Delete(int id);
+
+        Task<int> GetCount();
     }
 }

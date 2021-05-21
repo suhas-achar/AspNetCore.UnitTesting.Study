@@ -31,6 +31,11 @@ namespace Vehicle.Api.Services
             return await Task.FromResult(new VehicleModel { Id = id, Make = "Tata", Model = "LPT1612", Owner = "Ravindra", Year = 2009 });
         }
 
+        public async Task<int> GetCount()
+        {
+            return await Task.FromResult(3);
+        }
+
         public async Task Update(VehicleModel model)
         {
             await Task.CompletedTask;
